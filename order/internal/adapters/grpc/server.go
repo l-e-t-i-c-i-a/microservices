@@ -7,7 +7,7 @@ import (
 
 	"log"
 
-	"github.com/l-e-t-i-c-i-a/microservices-proto/golang/order"
+	order "github.com/l-e-t-i-c-i-a/microservices-proto/golang/order"
 	"github.com/l-e-t-i-c-i-a/microservices/order/config"
 	"github.com/l-e-t-i-c-i-a/microservices/order/internal/application/core/domain"
 	"github.com/l-e-t-i-c-i-a/microservices/order/internal/ports"
