@@ -16,6 +16,9 @@ import (
 )
 
 func (a Adapter) Create (ctx context.Context, request *order.CreateOrderRequest) (*order.CreateOrderResponse, error) {
+	// LOG 1: Avisa que chegou uma requisição
+	log.Printf("📥 Recebendo novo pedido do cliente ID: %v", request.CostumerId)
+
 	// 1. Tradução (Mapping): De Proto para Domínio
 	var orderItems []domain.OrderItem
 	for _, orderItem := range request.OrderItems {
@@ -32,8 +35,13 @@ func (a Adapter) Create (ctx context.Context, request *order.CreateOrderRequest)
 	newOrder := domain.NewOrder(int64(request.CostumerId), orderItems)
 	result, err := a.api.PlaceOrder(newOrder)
 	if err != nil {
+		// LOG DE ERRO (opcional, mas bom ter)
+		log.Printf("❌ Erro ao processar pedido: %v", err)
 		return nil, err
 	}
+
+	// LOG 2: Avisa que deu tudo certo e mostra o ID gerado
+	log.Printf("✅ Pedido criado com sucesso! ID no Banco: %d", result.ID)
 
 	// 3. Tradução de Volta: De Domínio para Proto
     // Uso do & para retornar o endereço da resposta
