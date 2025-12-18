@@ -89,3 +89,8 @@ func (a Adapter) Save(order *domain.Order) error {
 	}
 	return res.Error
 }
+
+func (a Adapter) Update(order domain.Order) error {
+	// Atualiza apenas o campo "status" onde o ID for igual ao do pedido
+	return a.db.Model(&Order{}).Where("id = ?", order.ID).Update("status", order.Status).Error
+}
