@@ -50,4 +50,21 @@
     
     ```
 
-#### Se aparecer "Order created with ID: 1", funcionou!
+#### Se aparecer "Pedido criado com ID:", funcionou!
+
+
+6. Para ver os status dos pedidos
+    - No terminal 1 onde rodou o Docker digite: docker ps (para ver o ID do container mysql)
+    - Rodar:
+   ```powershell
+
+    # Troque 'ID_AQUI' pelo ID do seu container
+    docker exec -it ID_AQUI mysql -u root -pminhasenha
+    
+    ```
+
+    - Quando o terminal mudar para mysql>, rode o SQL:
+    ```SQL
+        USE `order`;
+        SELECT * FROM orders;
+    ```
