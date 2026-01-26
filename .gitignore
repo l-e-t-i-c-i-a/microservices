@@ -4,10 +4,6 @@
 *.so
 *.dylib
 
-
-# Ignorar a pasta de dependências (pesada)
-vendor/
-
 # Ignorar arquivos de sistema/IDE
 .DS_Store
 .vscode/
