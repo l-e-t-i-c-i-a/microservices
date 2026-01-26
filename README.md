@@ -31,12 +31,15 @@ Aguarde até ver logs indicando que os serviços "Order", "Payment" e "Shipping"
 
 ### Rodar o cliente
 - Abrir um terminal em microservices/client
-- Rodar:
-```powershell
+- Instale as dependências (necessário apenas na primeira vez):
+    - Rodar:
+    ```powershell
+    pip install -r requirements.txt
+    # ou 'pip3 install -r requirements.txt' no Linux/Mac
+    py client.py
+    # ou python3 client.py no linux
 
-py client.py
-
-```
+    ```
 
 
 ## 🚀 Opção 2: Rodar manualmente
@@ -102,7 +105,7 @@ go run cmd/main.go
 - Abrir um terminal
 - Rodar:
 ```powershell
-
+pip install -r requirements.txt
 py client.py
 
 ```
