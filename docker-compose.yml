@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # --- Banco de Dados ---
+  mysql:
+    image: mysql:8.0
+    container_name: microservices-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: minhasenha
+      MYSQL_DATABASE: order
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # --- Payment ---
+  payment:
+    build: ./payment
+    container_name: microservices-payment
+    ports:
+      - "3001:3001"
+    environment:
+      - APPLICATION_PORT=3001
+      - ENV=production
+      - DB_DRIVER=mysql
+      - DATA_SOURCE_URL=root:minhasenha@tcp(mysql:3306)/payment
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # --- Shipping (O Novo Serviço) ---
+  shipping:
+    build: ./shipping
+    container_name: microservices-shipping
+    ports:
+      - "3002:3002"
+    environment:
+      - APPLICATION_PORT=3002
+      - ENV=production
+
+  # --- Order (O Maestro) ---
+  order:
+    build: ./order
+    container_name: microservices-order
+    ports:
+      - "3000:3000"
+    environment:
+      - APPLICATION_PORT=3000
+      - ENV=production
+      - DB_DRIVER=mysql
+      - DATA_SOURCE_URL=root:minhasenha@tcp(mysql:3306)/order?parseTime=true
+      # Conecta nos containers pelos nomes definidos acima
+      - PAYMENT_SERVICE_URL=payment:3001
+      - SHIPPING_SERVICE_URL=shipping:3002
+    depends_on:
+      mysql:
+        condition: service_healthy
+      payment:
+        condition: service_started
+      shipping:
+        condition: service_started

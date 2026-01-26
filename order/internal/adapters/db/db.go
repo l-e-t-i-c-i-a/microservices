@@ -23,6 +23,13 @@ type OrderItem struct {
 	OrderID uint
 }
 
+// Nova Entidade para o GORM criar a tabela
+type Product struct {
+	gorm.Model
+	Code string `gorm:"uniqueIndex;size:255"` // Código do produto (ex: "CANETA")
+	Name string
+}
+
 type Adapter struct {
 	db *gorm.DB
 }
@@ -32,10 +39,20 @@ func NewAdapter(dataSourceUrl string) (*Adapter, error) {
 	if openErr != nil {
 		return nil, fmt.Errorf("db connection error: %v", openErr)
 	}
-	err := db.AutoMigrate(&Order{}, OrderItem{})
+	err := db.AutoMigrate(&Order{}, OrderItem{}, &Product{})
 	if err != nil {
 		return nil, fmt.Errorf("db migration error: %v", err)
 	}
+
+	// SEED: Insere produtos de teste se não existirem
+    var count int64
+    db.Model(&Product{}).Count(&count)
+    if count == 0 {
+        db.Create(&Product{Code: "CANETA", Name: "Caneta Azul"})
+        db.Create(&Product{Code: "NOTEBOOK", Name: "Macbook"})
+        db.Create(&Product{Code: "MOUSE", Name: "Mouse Logitech"})
+    }
+	
 	return &Adapter{db: db}, nil
 }
 
@@ -93,4 +110,17 @@ func (a Adapter) Save(order *domain.Order) error {
 func (a Adapter) Update(order domain.Order) error {
 	// Atualiza apenas o campo "status" onde o ID for igual ao do pedido
 	return a.db.Model(&Order{}).Where("id = ?", order.ID).Update("status", order.Status).Error
+}
+
+// Novo método para verificar estoque
+func (a Adapter) CheckProductsExist(orderItems []domain.OrderItem) error {
+    for _, item := range orderItems {
+        var count int64
+        // Busca produto pelo código
+        a.db.Model(&Product{}).Where("code = ?", item.ProductCode).Count(&count)
+        if count == 0 {
+            return fmt.Errorf("product not found in stock: %s", item.ProductCode)
+        }
+    }
+    return nil
 }
