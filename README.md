@@ -30,7 +30,7 @@ docker-compose up --build
 Aguarde até ver logs indicando que os serviços "Order", "Payment" e "Shipping" iniciaram nas portas 3000, 3001 e 3002.
 
 ### Rodar o cliente
-- Abrir um terminal  
+- Abrir um terminal em microservices/client
 - Rodar:
 ```powershell
 
