@@ -30,16 +30,30 @@ docker-compose up --build
 Aguarde até ver logs indicando que os serviços "Order", "Payment" e "Shipping" iniciaram nas portas 3000, 3001 e 3002.
 
 ### Rodar o cliente
+- Para evitar conflitos e erros de permissão, recomenda-se criar um ambiente virtual (venv).
 - Abrir um terminal em microservices/client
-- Instale as dependências (necessário apenas na primeira vez):
-    - Rodar:
-    ```powershell
-    pip install -r requirements.txt
-    # ou 'pip3 install -r requirements.txt' no Linux/Mac
-    py client.py
-    # ou python3 client.py no linux
+- Rodar:
+```powershell
+#linux:
+# Se der erro de "module not found", instale o venv antes:
+# sudo apt install python3-venv
 
-    ```
+python3 -m venv venv
+source venv/bin/activate
+
+#windows:
+python -m venv venv
+.\venv\Scripts\activate
+
+#(Ao ativar, você verá um (venv) no começo da linha do terminal).
+#Com o ambiente ativado, instale as bibliotecas gRPC:
+pip install -r requirements.txt
+# ou 'pip3 install -r requirements.txt' no Linux/Mac
+
+py client.py
+# ou python3 client.py no linux
+
+```
 
 
 ## 🚀 Opção 2: Rodar manualmente
