@@ -1,6 +1,11 @@
 # 📦 Projeto Microservices gRPC (Order, Payment, Shipping)
 
-Este projeto implementa uma arquitetura de microsserviços usando Go, gRPC, MySQL e Docker.
+Este projeto implementa uma arquitetura de microsserviços para um E-commerce utilizando **Go**, **gRPC**, **MySQL** e **Docker**.
+
+O sistema é composto por:
+- **Order Service:** Gerencia pedidos.
+- **Payment Service:** Processa pagamentos.
+- **Shipping Service:** Calcula prazos de entrega.
 
 ---
 
@@ -14,19 +19,7 @@ Este projeto implementa uma arquitetura de microsserviços usando Go, gRPC, MySQ
 ## Passos para testar
 
 ## 🚀 Opção 1: Rodar com Docker Compose (Recomendado)
-Esta é a maneira mais simples de executar, pois sobe o banco de dados e os 3 serviços automaticamente.
-
-### Preparar Dependências (Vendoring)
-Como estamos usando arquivos locais para garantir a compatibilidade, você **precisa** gerar a pasta `vendor` em cada microsserviço antes de subir o Docker.
-
-Execute os comandos abaixo (terminal na pasta raiz `microservices`):
-
-```powershell
-# No Windows (PowerShell):
-cd order; go mod tidy; go mod vendor; cd ..
-cd payment; go mod tidy; go mod vendor; cd ..
-cd shipping; go mod tidy; go mod vendor; cd ..
-```
+Esta é a maneira mais simples de executar, pois sobe o banco de dados e os 3 serviços automaticamente com todas as dependências já configuradas.
 
 ### Subir a Aplicação
 Na pasta raiz microservices, execute: docker-compose up --build
