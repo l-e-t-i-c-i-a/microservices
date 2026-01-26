@@ -22,11 +22,15 @@ O sistema é composto por:
 Esta é a maneira mais simples de executar, pois sobe o banco de dados e os 3 serviços automaticamente com todas as dependências já configuradas.
 
 ### Subir a Aplicação
-Na pasta raiz microservices, execute: docker-compose up --build
+Na pasta raiz microservices, execute: 
+```powershell
+docker-compose up --build
+```
+
 Aguarde até ver logs indicando que os serviços "Order", "Payment" e "Shipping" iniciaram nas portas 3000, 3001 e 3002.
 
 ### Rodar o cliente
-- Abrir um terminal  
+- Abrir um terminal em microservices/client
 - Rodar:
 ```powershell
 
